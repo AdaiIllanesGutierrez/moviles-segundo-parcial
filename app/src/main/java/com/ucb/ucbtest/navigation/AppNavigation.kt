@@ -10,9 +10,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.ucb.domain.Movie
 import com.ucb.ucbtest.counter.CounterUI
-import com.ucb.ucbtest.gitalias.GitaliasUI
+//import com.ucb.ucbtest.gitalias.GitaliasUI
 import com.ucb.ucbtest.login.LoginUI
-import com.ucb.ucbtest.movie.MoviesUI
+//import com.ucb.ucbtest.movie.MoviesUI
 import com.ucb.ucbtest.moviedetail.MovieDetailUI
 import com.ucb.ucbtest.takephoto.TakePhotoUI
 import kotlinx.serialization.encodeToString
@@ -42,7 +42,7 @@ fun AppNavigation() {
         }
 
         composable(Screen.GitaliasScreen.route) {
-            GitaliasUI()
+//            GitaliasUI()
         }
 
         composable(Screen.TakePhotoScreen.route) {
@@ -61,12 +61,12 @@ fun AppNavigation() {
 
         composable(Screen.MoviesScreen.route) {
 
-            MoviesUI( onSuccess = {
-                movie ->
-                    val movieJson = Json.encodeToString(movie)
-                    val encodeMovieJson = URLEncoder.encode(movieJson, "UTF-8")
-                    navController.navigate("${Screen.MovieDetailScreen.route}/$encodeMovieJson")
-            })
+//            MoviesUI( onSuccess = {
+//                movie ->
+//                    val movieJson = Json.encodeToString(movie)
+//                    val encodeMovieJson = URLEncoder.encode(movieJson, "UTF-8")
+//                    navController.navigate("${Screen.MovieDetailScreen.route}/$encodeMovieJson")
+//            })
         }
 
         composable(
