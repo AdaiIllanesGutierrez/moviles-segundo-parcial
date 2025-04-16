@@ -57,6 +57,8 @@ fun AppNavigation() {
             )
         }
 
+
+
         composable(Screen.MoviesScreen.route) {
 
             MoviesUI( onSuccess = {

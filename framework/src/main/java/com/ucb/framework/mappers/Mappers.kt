@@ -1,9 +1,12 @@
 package com.ucb.framework.mappers
 
+import com.ucb.domain.Book
 import com.ucb.domain.Gitalias
 import com.ucb.domain.Movie
 import com.ucb.framework.dto.AvatarResponseDto
+import com.ucb.framework.dto.BookDocDto
 import com.ucb.framework.dto.MovieDto
+import com.ucb.framework.persistence.BookEntity
 import com.ucb.framework.persistence.GitAccount
 
 fun AvatarResponseDto.toModel(): Gitalias {
@@ -24,10 +27,20 @@ fun GitAccount.toModel(): Gitalias {
     )
 }
 
-fun MovieDto.toModel(): Movie {
-    return Movie(
-        title = title,
-        overview = overview,
-        posterPath = posterPath
-    )
-}
+fun Book.toBookEntity(): BookEntity = BookEntity(
+    id = id,
+    title = title,
+    authors = authors.joinToString(","),
+    year = year,
+    like = like,
+    coverUrl = coverUrl
+)
+
+fun BookEntity.toBookModel(): Book = Book(
+    id = id,
+    title = title,
+    authors = authors.split(","),
+    year = year,
+    like = like,
+    coverUrl = coverUrl
+)

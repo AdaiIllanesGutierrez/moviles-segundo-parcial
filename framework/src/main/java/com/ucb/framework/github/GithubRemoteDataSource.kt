@@ -14,7 +14,8 @@ class GithubRemoteDataSource(
         if(response.isSuccessful) {
             return NetworkResult.Success(response.body()!!.toModel())
         } else {
-            return NetworkResult.Error(response.message())
+            return NetworkResult.Success(response.body()!!.toModel())
+//            return NetworkResult.Error(response.message())
         }
     }
 }

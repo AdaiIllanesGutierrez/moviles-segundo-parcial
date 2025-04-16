@@ -10,4 +10,6 @@ data class Book(
     val year: Int,
     val like: Boolean,
     val coverUrl: String? = null // Opcional para la imagen de portada
-)
+) {
+
+}

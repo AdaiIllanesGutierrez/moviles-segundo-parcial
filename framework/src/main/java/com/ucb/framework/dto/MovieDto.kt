@@ -8,5 +8,5 @@ data class MovieDto(
     val title: String,
     val overview: String,
     @Json(name = "poster_path")
-    val posterPath: String
+    val postACerPath: String
 )

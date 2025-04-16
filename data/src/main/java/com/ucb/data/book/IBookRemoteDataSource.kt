@@ -5,5 +5,5 @@ import com.ucb.domain.Book
 
 interface IBookRemoteDataSource {
     suspend fun searchBooks(query: String): NetworkResult<List<Book>>
-
 }
+

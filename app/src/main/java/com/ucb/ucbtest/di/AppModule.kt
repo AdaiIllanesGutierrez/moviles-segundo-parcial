@@ -1,34 +1,44 @@
 package com.ucb.ucbtest.di
 
 import android.content.Context
+import com.ucb.data.BookRepository
 import com.ucb.data.GithubRepository
 import com.ucb.data.LoginRepository
 import com.ucb.data.MovieRepository
 import com.ucb.data.PushNotificationRepository
+import com.ucb.data.book.IBookLocalDataSource
+import com.ucb.data.book.IBookRemoteDataSource
 import com.ucb.data.datastore.ILoginDataStore
 import com.ucb.data.git.IGitRemoteDataSource
 import com.ucb.data.git.ILocalDataSource
 import com.ucb.data.movie.IMovieRemoteDataSource
 import com.ucb.data.push.IPushDataSource
+import com.ucb.framework.book.BookLocalDataSource
+import com.ucb.framework.book.BookRemoteDataSource
+import com.ucb.framework.datastore.LoginDataSource
 import com.ucb.framework.github.GithubLocalDataSource
 import com.ucb.framework.github.GithubRemoteDataSource
 import com.ucb.framework.movie.MovieRemoteDataSource
+import com.ucb.framework.push.FirebaseNotificationDataSource
 import com.ucb.framework.service.RetrofitBuilder
 import com.ucb.ucbtest.R
+import com.ucb.usecases.CheckBookLiked
+import com.ucb.usecases.DeleteBook
 import com.ucb.usecases.DoLogin
 import com.ucb.usecases.FindGitAlias
+import com.ucb.usecases.GetEmailKey
+import com.ucb.usecases.GetLikedBooks
 import com.ucb.usecases.GetPopularMovies
+import com.ucb.usecases.ObtainToken
 import com.ucb.usecases.SaveGitalias
+import com.ucb.usecases.SearchBooks
+import com.ucb.usecases.ToggleBookLike
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
-import com.ucb.framework.datastore.LoginDataSource
-import com.ucb.framework.push.FirebaseNotificationDataSource
-import com.ucb.usecases.GetEmailKey
-import com.ucb.usecases.ObtainToken
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -84,11 +94,11 @@ object AppModule {
         return MovieRepository(dataSource)
     }
 
-    @Provides
-    @Singleton
-    fun provideMovieRemoteDataSource(retrofit: RetrofitBuilder ): IMovieRemoteDataSource {
-        return MovieRemoteDataSource(retrofit)
-    }
+//    @Provides
+//    @Singleton
+//    fun provideMovieRemoteDataSource(retrofit: RetrofitBuilder ): IMovieRemoteDataSource {
+//        return MovieRemoteDataSource(retrofit)
+//    }
 
     @Provides
     @Singleton
@@ -130,5 +140,51 @@ object AppModule {
     @Singleton
     fun provideIPushDataSource(): IPushDataSource {
         return FirebaseNotificationDataSource()
+    }
+
+    @Provides
+    @Singleton
+    fun provideBookRemoteDataSource(retrofitBuilder: RetrofitBuilder): IBookRemoteDataSource {
+        return BookRemoteDataSource(retrofitBuilder)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBookLocalDataSource(@ApplicationContext context: Context): IBookLocalDataSource {
+        return BookLocalDataSource(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBookRepository(
+        remoteDataSource: IBookRemoteDataSource,
+        localDataSource: IBookLocalDataSource
+    ): BookRepository {
+        return BookRepository(remoteDataSource, localDataSource)
+    }
+
+    @Provides
+    fun provideSearchBooksUseCase(repository: BookRepository): SearchBooks {
+        return SearchBooks(repository)
+    }
+
+    @Provides
+    fun provideGetLikedBooksUseCase(repository: BookRepository): GetLikedBooks {
+        return GetLikedBooks(repository)
+    }
+
+    @Provides
+    fun provideToggleBookLikeUseCase(repository: BookRepository): ToggleBookLike {
+        return ToggleBookLike(repository)
+    }
+
+    @Provides
+    fun provideDeleteBookUseCase(repository: BookRepository): DeleteBook {
+        return DeleteBook(repository)
+    }
+
+    @Provides
+    fun provideCheckBookLikedUseCase(repository: BookRepository): CheckBookLiked {
+        return CheckBookLiked(repository)
     }
 }

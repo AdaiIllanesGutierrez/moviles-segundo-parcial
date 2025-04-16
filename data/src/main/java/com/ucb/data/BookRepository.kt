@@ -23,6 +23,9 @@ class BookRepository (private val remoteDataSource: IBookRemoteDataSource,
     suspend fun getLikedBooks(): List<Book> {
         return localDataSource.getAll()
     }
+    suspend fun forceDelete(book: Book) {
+        localDataSource.delete(book.id)
+    }
 
     suspend fun isBookLiked(bookId: String): Boolean {
         return localDataSource.findByUser(bookId) != null
